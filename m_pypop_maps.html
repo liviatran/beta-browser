@@ -9,13 +9,14 @@
 <LINK REL="apple-touch-startup-image" href="app-startup-image.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="copyright" content="steven j mack 2011" />
+
 
 <script type="text/javascript">
 var doOnce=0;
 var allele1;
-var portsize="310"; // 310/320 == 0.96875
+var portsize="320"; // 310/320 == 0.96875
 var landsize="446"; // 446/460 ==
 var mapsize;
 
@@ -35,6 +36,7 @@ function initializePage()
 function applyBlank()
 {
 	document.getElementById("leftmap").innerHTML="<img src='blank_map.gif' width=" + mapsize + ">";
+	
 	document.getElementById("rightmap").innerHTML="<img src='blank_map.gif' width=" + mapsize + ">";
 }
 
@@ -50,23 +52,37 @@ function showMap()
 	if (window.orientation==-90) // turned Right
 		{
 			document.getElementById("leftmap").innerHTML="";	// turn off left map
+
 		}
-		else
+	else
 		{
-			document.getElementById("leftmap").innerHTML="<img src='http://www.pypop.org/popdata/2008/maps/"+ allele1 + ".gif' width=" + mapsize + ">";
+			document.getElementById("leftmap").innerHTML="<img id='left' src='http://www.pypop.org/popdata/2008/maps/"+ allele1 + ".gif' width=" + mapsize + ">";
+
+			document.getElementById("left").style.width = "100%";
+			
+			document.getElementById("tab").style.width='100%';
+
 		}
 
 	allele1=document.rightallele.allele.value;
+
 	if (window.orientation==90) // turned Left
 		{
 			document.getElementById("rightmap").innerHTML="";	// turn off right map
+
 		}
-		else
+	else
 		{
-			document.getElementById("rightmap").innerHTML="<img src='http://www.pypop.org/popdata/2008/maps/"+ allele1 + ".gif' width=" + mapsize + ">";
+			document.getElementById("rightmap").innerHTML="<img id='right' src='http://www.pypop.org/popdata/2008/maps/"+ allele1 + ".gif' width=" + mapsize + ">";
+
+			document.getElementById("right").style.width = "45%";
+			document.getElementById("right").style.paddingBottom = "40px";
+
+			document.getElementById("tab").style.width='100%';
 		}
 
 	document.getElementById("cancelbutton").innerHTML="<button type='button' onclick='clearMaps()'>Clear Maps</button>";
+
 }
 
 function clearMaps()
@@ -144,6 +160,7 @@ function switchLocus(side)
 //</script>
 </head>
 
+
 <body onOrientationChange="newOrientation();" onLoad="initializePage();">
 <table border=0 cellspacing=0 cellpadding=0>
 <tr><td>
@@ -155,7 +172,7 @@ function switchLocus(side)
 	<span id=orient1></span>
 	<span id=rightmap></span>
 
-<tr><td align=center bgcolor="#e9cfec"> <!//#fcdfff>
+<tr><td id='tab' align=center bgcolor="#e9cfec" style="width: auto; height: auto; padding: 0px;"> <!//#fcdfff>
 
 	<table border=0 cellspacing=0 cellpadding=1>
 	<tr><td>
