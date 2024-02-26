@@ -46,37 +46,40 @@ function updateMap() // this keeps the maps from being loaded when the orientati
 		showMap();
 }
 
-function showMap()
-{
-	allele1=document.leftallele.allele.value;
-	if (window.orientation==-90) // turned Right
-		{
-			document.getElementById("leftmap").innerHTML="";	// turn off left map
+function showMap() {
 
-		}
-	else
-		{
-			document.getElementById("leftmap").innerHTML="<img id='left' src='http://www.pypop.org/popdata/2008/maps/"+ allele1 + ".gif' width=" + mapsize + ">";
+	var viewportWidth = window.innerWidth;
 
-			document.getElementById("left").style.width = "100%";
-			
-			document.getElementById("tab").style.width='100%';
+	// calculate the new mapsize based on the viewport width
+	//var mapsize = viewportWidth * 0.7; 
+	allele1 = document.leftallele.allele.value;
 
-		}
+	if (window.orientation == -90) {
+			document.getElementById("leftmap").innerHTML = "";
+			document.getElementbyId('right').style.width = viewportWidth 
+			   
+
+	} else {
+		var imageUrlLeft = "http://www.pypop.org/popdata/2008/maps/" + allele1 + ".gif";
+		var imageHTMLLeft = "<img id='left' src='" + imageUrlLeft + "' width='" + viewportWidth + "' style='max-width: 100%; height: auto; width=100%'>";
+		document.getElementById("leftmap").innerHTML = imageHTMLLeft;
+
+		document.getElementById("tab").style.width = '100%';
+	}
 
 	allele1=document.rightallele.allele.value;
 
 	if (window.orientation==90) // turned Left
 		{
 			document.getElementById("rightmap").innerHTML="";	// turn off right map
+			document.getElementbyId('left').style.width = viewportWidth 
 
 		}
 	else
 		{
-			document.getElementById("rightmap").innerHTML="<img id='right' src='http://www.pypop.org/popdata/2008/maps/"+ allele1 + ".gif' width=" + mapsize + ">";
-
-			document.getElementById("right").style.width = "100%";
-			document.getElementById("right").style.paddingBottom = "40px";
+			var imageUrlRight = "http://www.pypop.org/popdata/2008/maps/" + allele1 + ".gif";
+			var imageHTMLRight = "<img id='right' src='" + imageUrlRight + "' width='" + viewportWidth + "' style='max-width: 100%; height: auto; width=100%'>";
+			document.getElementById("rightmap").innerHTML = imageHTMLRight;
 
 			document.getElementById("tab").style.width='100%';
 		}
