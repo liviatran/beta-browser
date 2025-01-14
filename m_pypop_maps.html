@@ -56,6 +56,7 @@ function showMap() {
 			document.getElementById("leftmap").innerHTML = "";
 			document.getElementById('tab').style.display='none'
 			
+			//set small timeout to remove table before updating image attributes
 			setTimeout(() => {
         		let left = document.getElementById("left");
         		if (left) {
@@ -63,7 +64,7 @@ function showMap() {
             		left.style.width = "100%";
             		left.style.height = "100vh";
         }
-    }, 0);
+    		}, 0);
 
 	} else {
 
@@ -168,6 +169,33 @@ function switchLocus(side)
 		break;
 	}
 }
+
+//add event listener to auto update maps when user selection changes
+document.addEventListener("DOMContentLoaded", function () {
+	const rightLocus = document.forms['rightlocus'].elements['locus'];
+    const rightAllele = document.forms['rightallele'].elements['allele'];
+	
+	const leftLocus = document.forms['leftlocus'].elements['locus'];
+	const leftAllele = document.forms['leftallele'].elements['allele'];
+	
+	//if the locus changes, send a change event to the right allele event listener so map will update
+	rightLocus.addEventListener('change', function() {
+		rightAllele.dispatchEvent(new Event('change'));
+	});
+	//update map based on changes in user selection
+	rightAllele.addEventListener('change', function () {
+		showMap();
+	});
+
+	leftLocus.addEventListener('change', function() {
+		leftAllele.dispatchEvent(new Event('change'));
+	});
+
+	leftAllele.addEventListener('change', function () {
+		showMap();
+	});
+
+});
 
 //</script>
 </head>
