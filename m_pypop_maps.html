@@ -51,45 +51,58 @@ function showMap() {
 	// calculate the new mapsize based on the viewport width
 	//var mapsize = viewportWidth * 0.7; 
 	allele1 = document.leftallele.allele.value;
+	//TOP = LEFT
+	//BOTTOM = RIGHT
 
-	if (window.orientation == -90) {
+	if (window.orientation == -90) { //turned right, turn TOP MAP OFF, KEEP BOTTOM MAP
 			document.getElementById("leftmap").innerHTML = "";
-			document.getElementById('tab').style.display='none'
 			
-			//set small timeout to remove table before updating image attributes
+			//set small timeout to allow tab to disappear before updating image attributes, since the bottom image is closer to the tab bar
 			setTimeout(() => {
-        		let left = document.getElementById("left");
-        		if (left) {
-            		left.style.objectFit = "contain";
-            		left.style.width = "100%";
-            		left.style.height = "100vh";
-        }
+				let right = document.getElementById("right")
+
+				right.style.objectFit = "contain";
+				right.style.width = "100%";
+				right.style.height = "100vh";
     		}, 0);
 
 	} else {
 
 		document.getElementById("leftmap").innerHTML="<img id='left' src='https://github.com/liviatran/pypopMaps/blob/main/"+ allele1 + ".jpg?raw=true' width=" + mapsize + ">";
-
-		document.getElementById("left").style.marginBottom = "10px";
-		document.getElementById('tab').style.display='block'
-
+		
+		//center portrait wise
+		let left = document.getElementById("left")
+		left.style.display = "block"
+		left.style.marginLeft = "auto"
+		left.style.marginRight = "auto"
+		left.style.marginBottom = "10px";
+		
 	}
 
 	allele1=document.rightallele.allele.value;
 
-	if (window.orientation==90) // turned Left
+	if (window.orientation==90) // turned left; TURN BOTTOM MAP OFF, KEEP TOP MAP
 		{
-			document.getElementById("rightmap").innerHTML="";	// turn off right map
-			document.getElementById("right").style.objectFit = "contain";
-			document.getElementById("right").style.width = "100%";
-			document.getElementById("right").style.height = "100vh";
+			document.getElementById("rightmap").innerHTML="";
+
+			let left = document.getElementById("left")
+			left.style.objectFit = "contain";
+			left.style.width = "100%";
+			left.style.height = "100vh";
 			
 		}
 	else
 		{
 			document.getElementById("rightmap").innerHTML="<img id='right' src='https://github.com/liviatran/pypopMaps/blob/main/"+ allele1 + ".jpg?raw=true' width=" + mapsize + ">";
 
-			document.getElementById("right").style.marginBottom = "10px";
+			let right = document.getElementById("right")
+
+			//center portrait wise
+			right.style.display = "block"
+			right.style.marginLeft = "auto"
+			right.style.marginRight = "auto"
+
+			right.style.marginBottom = "10px";
 			document.getElementById("tab").style.marginTop='10px';
 
 		}
@@ -107,6 +120,7 @@ function clearMaps()
 	document.rightallele.allele[0].selected="1";
 	document.rightlocus.locus[0].selected="1";
 	doOnce=0;
+
 }
 
 function newOrientation()
@@ -178,13 +192,27 @@ document.addEventListener("DOMContentLoaded", function () {
 	const leftLocus = document.forms['leftlocus'].elements['locus'];
 	const leftAllele = document.forms['leftallele'].elements['allele'];
 	
+	let showMapClick = false
+
+	document.getElementById('showMap').addEventListener('click', function () {
+        showMapClick = true; 
+        showMap(); 
+    });
+
+	document.getElementById('cancelbutton').addEventListener('click', function () {
+        showMapClick = false; 
+    });
+
 	//if the locus changes, send a change event to the right allele event listener so map will update
 	rightLocus.addEventListener('change', function() {
 		rightAllele.dispatchEvent(new Event('change'));
 	});
-	//update map based on changes in user selection
+	
+	//update map based on changes in user selection only if show map button is clicked
 	rightAllele.addEventListener('change', function () {
-		showMap();
+		if(showMapClick){
+			showMap();
+		}
 	});
 
 	leftLocus.addEventListener('change', function() {
@@ -192,7 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	leftAllele.addEventListener('change', function () {
-		showMap();
+		if(showMapClick){
+			showMap();
+		}
 	});
 
 });
@@ -1079,7 +1109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </center>
 
 <span id=orient2><td><center></span>
-<p><button type="button" onclick="updateMap();">Show Maps</button><span id="cancelbutton"></span></center>
+<p><button type="button" id="showMap" onclick="updateMap();">Show Maps</button><span id="cancelbutton"></span></center>
 
 
 <span id=orient3><td><center></span>
