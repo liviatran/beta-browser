@@ -20,6 +20,16 @@ var portsize="320"; // 310/320 == 0.96875
 var landsize="446"; // 446/460 ==
 var mapsize;
 
+//alleles with only admixed or mig populations
+const alleles = [
+    "A*68:15", "A*24:22", "A*02:60", "A*34:03", "A*74:09", "A*74:11", "A*03:12", "A*26:07", "A*68:08", "A*33:05", 
+    "B*07:20", "B*15:42", "B*08:12", "B*35:33", "B*57:06", "B*40:27", "B*51:13", "B*78:05", "B*51:44", 
+    "C*15:09", "C*06:08", "C*06:09", "C*08:13", "C*16:08", "C*17:04", 
+    "DRB1*01:06", "DRB1*13:22", "DRB1*13:16", "DRB1*03:06", "DRB1*16:07", "DRB1*11:15", "DRB1*13:21", "DRB1*14:16", 
+    "DRB1*14:24", "DRB1*13:14"
+]; 
+
+
 function initializePage()
 {
 	if (window.orientation==0)
@@ -51,6 +61,13 @@ function showMap() {
 	// calculate the new mapsize based on the viewport width
 	//var mapsize = viewportWidth * 0.7; 
 	allele1 = document.leftallele.allele.value;
+	
+	//if selected allele only has admixed populations, display admixed map indicating the variant does not have
+	//a map
+	if (alleles.includes(allele1)) {
+		allele1 = 'admixed_mig'
+	}
+
 	//TOP = LEFT
 	//BOTTOM = RIGHT
 
@@ -67,19 +84,17 @@ function showMap() {
     		}, 0);
 
 	} else {
-
 		document.getElementById("leftmap").innerHTML="<img id='left' src='https://github.com/liviatran/pypopMaps/blob/main/"+ allele1 + ".jpg?raw=true' width=" + mapsize + ">";
-		
-		//center portrait wise
+
+
 		let left = document.getElementById("left")
-		left.style.display = "block"
-		left.style.marginLeft = "auto"
-		left.style.marginRight = "auto"
-		left.style.marginBottom = "10px";
-		
+		left.style.marginBottom = "15px";
 	}
 
-	allele1=document.rightallele.allele.value;
+	allele2=document.rightallele.allele.value;
+	if (alleles.includes(allele2)) {
+		allele2 = 'admixed_mig'
+	}
 
 	if (window.orientation==90) // turned left; TURN BOTTOM MAP OFF, KEEP TOP MAP
 		{
@@ -93,18 +108,10 @@ function showMap() {
 		}
 	else
 		{
-			document.getElementById("rightmap").innerHTML="<img id='right' src='https://github.com/liviatran/pypopMaps/blob/main/"+ allele1 + ".jpg?raw=true' width=" + mapsize + ">";
+			document.getElementById("rightmap").innerHTML="<img id='right' src='https://github.com/liviatran/pypopMaps/blob/main/"+ allele2 + ".jpg?raw=true' width=" + mapsize + ">";
 
 			let right = document.getElementById("right")
-
-			//center portrait wise
-			right.style.display = "block"
-			right.style.marginLeft = "auto"
-			right.style.marginRight = "auto"
-
-			right.style.marginBottom = "10px";
-			document.getElementById("tab").style.marginTop='10px';
-
+			right.style.marginBottom = "15px";
 		}
 
 	document.getElementById("cancelbutton").innerHTML="<button type='button' onclick='clearMaps()'>Clear Maps</button>";
@@ -236,15 +243,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <tr><td>
 <span id=titlerow>
 </span>
-<tr><td>
-
+<tr><td align=center>
 	<span id=leftmap></span>
 	<span id=orient1></span>
 	<span id=rightmap></span>
 
 <tr><td id='tab' align=center bgcolor="#e9cfec" style="width: auto; height: auto; padding: 0px;"> <!//#fcdfff>
 
-	<table border=0 cellspacing=0 cellpadding=1>
+<table border=0 cellspacing=0 cellpadding=1>
 	<tr><td>
 <center>
 <form name="leftlocus">
@@ -1974,6 +1980,5 @@ document.addEventListener("DOMContentLoaded", function () {
 	</table>
 
 </table>
-
 </body>
 </html>
